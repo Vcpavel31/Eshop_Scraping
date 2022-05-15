@@ -1,38 +1,34 @@
+
+#############################################################################################################
+## Alza.cz bot validation -------- Not working yet --------
+#############################################################################################################
+
+
+from re import S
 import requests
 from bs4 import BeautifulSoup
 
-def Mironet_page(url):
-    #get data from website
-    page = requests.get(url)
-    #parse data
-    soup = BeautifulSoup(page.content, 'html.parser')
-    #get number of pages
-    pages = soup.find(class_="pagination").find_all(class_="PageNew")
+def Alza(url):
 
-    numpages = 0
-
-    #iterate through pages
-    for page in pages:
-        if(int(page.get_text()) > numpages):
-            numpages = int(page.get_text())
-
-    return numpages
-
-def Mironet(url):
-    #get number of pages
-    pages = Mironet_page(url)
-
-    sites = []
     data = []
+    sites = []
+    pages = 1
+    i = 1
 
-    #iterate from page one to last page (pages)
-    for i in range(1, pages+1):
+    while(pages):
         #get data from website
-        page = requests.get(url+'?PgID='+str(i))
+        page = requests.get(url.replace("&pg=1&", "&pg="+str(i)+"&"))
         #parse data
         soup = BeautifulSoup(page.content, 'html.parser')
-        #find all elements with class "item_b"
-        sites.append(soup.find_all(class_="item_b"))
+        #find all elements with id "boxc"
+        print(soup)
+        sites.append(soup.find("div", {"id": "boxc"}))
+
+        print(sites)
+        i += 1
+        if(soup.find("div", {"id": "boxc"}).find(class_="clear")): #empty
+            pages = 0
+    
     for products in sites:
         for product in products:
             #find all elements with class "nazev"
@@ -42,10 +38,11 @@ def Mironet(url):
             #remove new lines, tabs and multiple spaces from name
             name = name.replace('\n', '').replace('\t', '').replace('  ', '')
             #find all elements with class "item_b_cena"
-            price = product.find(class_="item_b_cena").get_text().encode('utf-8')
+            price = product.find(class_="item_b_cena").get_text()
+            #join array of words to string from normalize(price)
+            price = ''.join(normalize(price))
             #remove HTML spaces and "Kč" from price and convert to float
-            price = float(str(price.decode('utf-8')).strip().encode('ascii', 'ignore').decode('ascii').replace('Kč', '').replace('K', '').replace(' ', ''))
-            print(price," - ", product.find(class_="item_b_cena").get_text())
+            price = float(price.replace('K', '').replace('Kč', '').replace('č', '').replace(' ', ''))
             #find all elements with class "item_b_popis"
             description = product.find(class_="item_b_popis").get_text()
             #remove new lines, tabs and multiple spaces from description
@@ -68,3 +65,5 @@ def Mironet(url):
                     divided = price/capacity*1000    
             data.append([name, adresa, price, capacity, description, divided])
     return data
+
+print(Alza("https://www.alza.cz/interni-pevne-disky/18851840.htm#f&cst=null&cud=0&pg=1&prod=&sc=755"))#"https://www.alza.cz/harddisky-3-5/18849714.htm#f&cst=null&cud=0&pg=1&prod=&par281=281-1038&sc=1155"))
