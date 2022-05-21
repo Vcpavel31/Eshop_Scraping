@@ -1,0 +1,78 @@
+{
+    "Item Querries": [
+        {
+            "Category": "Extruders",
+            "actions": [
+                {
+                    "hover": "//*[@id=\"39800258756667\"]/div[2]/div[2]"
+                },
+                {
+                    "click": "//*[@id=\"39800258756667\"]/div[2]/div[2]/div/div/button[2]"
+                },
+                {
+                    "action": [
+                        {
+                            "remove": " incl. VAT"
+                        },
+                        {
+                            "remove": "\u00a3"
+                        },
+                        {
+                            "to_float": "1"
+                        }
+                    ],
+                    "read": "//*[@id=\"configurator\"]/div/div/div[2]/div[3]/div/div/span",
+                    "read_to": "Price"
+                },
+                {
+                    "action": [
+                        {
+                            "remove": " incl. VAT"
+                        },
+                        {
+                            "no_digit": ""
+                        },
+                        {
+                            "remove": "."
+                        }
+                    ],
+                    "read": "//*[@id=\"configurator\"]/div/div/div[2]/div[3]/div/div/span",
+                    "read_to": "Currency"
+                }
+            ],
+            "url": "https://e3d-online.com/products/revo-hemera"
+        },
+        {
+            "actions": [
+                {
+                    "action": [
+                        {
+                            "remove": "K\u010d"
+                        },
+                        {
+                            "remove": " "
+                        },
+                        {
+                            "to_float": "1"
+                        }
+                    ],
+                    "read": "//*[@id=\"ProductDetailPrices\"]/table/tbody[1]/tr[6]/td[2]/strong",
+                    "read_to": "price"
+                }
+            ],
+            "url": "https://www.i4wifi.cz/cs/232319-ubnt-unifi-switch-usw-flex-mini"
+        }
+    ],
+    "Search Querries": [
+        {
+            "Category": "SAS Drives",
+            "Eshop": "Mironet",
+            "URL": "https://www.mironet.cz/pevne-disky-a-ssd/interni-disky/hdd/35-sas+c30318/"
+        },
+        {
+            "Category": "SAS Drives",
+            "Eshop": "CZC",
+            "URL": "https://www.czc.cz/disky/produkty?technologie-pevneho-disku=magneticky&format-disku=3-5_7&rozhrani=sas-12gb-s"
+        }
+    ]
+}

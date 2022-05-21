@@ -18,7 +18,7 @@ def Mironet_page(url):
 
     return numpages
 
-def Mironet(url):
+def scrape(url):
     #get number of pages
     pages = Mironet_page(url)
 
@@ -45,7 +45,7 @@ def Mironet(url):
             price = product.find(class_="item_b_cena").get_text().encode('utf-8')
             #remove HTML spaces and "Kč" from price and convert to float
             price = float(str(price.decode('utf-8')).strip().encode('ascii', 'ignore').decode('ascii').replace('Kč', '').replace('K', '').replace(' ', ''))
-            print(price," - ", product.find(class_="item_b_cena").get_text())
+            #print(price," - ", product.find(class_="item_b_cena").get_text())
             #find all elements with class "item_b_popis"
             description = product.find(class_="item_b_popis").get_text()
             #remove new lines, tabs and multiple spaces from description
@@ -66,5 +66,5 @@ def Mironet(url):
                     #if yes, save it withouth "Kapacita", "GB" and without spaces and convert to float
                     capacity = float(description_array[i].replace('Kapacita', '').replace('GB', '').replace(' ', ''))
                     divided = price/capacity*1000    
-            data.append([name, adresa, price, capacity, description, divided])
+            data.append({"Name": name, "Address": adresa, "Price": price, "Capacity": capacity, "Description": description, "Divided": divided, "Currency": "CZK"})
     return data

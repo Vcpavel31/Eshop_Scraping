@@ -12,7 +12,7 @@ def CZC_page(url):
     #return number of pages
     return pages
 
-def CZC(url):
+def scrape(url):
     #get number of pages
     pages = CZC_page(url)
 
@@ -31,6 +31,7 @@ def CZC(url):
 
     for products in sites:
         for product in products:
+
             #find all elements with class "tile-title"
             name = product.find(class_="tile-title").find('a').get_text()
             #remove new lines, tabs and multiple spaces from name
@@ -43,7 +44,7 @@ def CZC(url):
             price = product.find(class_="price-vatin").get_text().encode('utf-8')
             #remove HTML spaces and "Kč" from price and convert to float
             price = float(str(price.decode('utf-8')).strip().encode('ascii', 'ignore').decode('ascii').replace('Kč', '').replace('K', '').replace(' ', ''))
-            print(price," - ", product.find(class_="price-vatin").get_text())
+            #print(price," - ", product.find(class_="price-vatin").get_text())
 
             #find all elements with class "tile-desc"
             description = product.find(class_="tile-desc").get_text()
@@ -57,10 +58,5 @@ def CZC(url):
 
             divided = price/capacity*1000    
 
-            data.append([name, adresa, price, capacity, description, divided])
+            data.append({"Name": name, "Address": adresa, "Price": price, "Capacity": capacity, "Description": description, "Divided": divided, "Currency": "CZK"})
     return data
-
-
-#url_czc = "https://www.czc.cz/disky/produkty?technologie-pevneho-disku=magneticky&format-disku=3-5_7&rozhrani=sas-12gb-s"
-
-#print(CZC(url_czc))
